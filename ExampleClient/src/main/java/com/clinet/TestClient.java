@@ -11,6 +11,8 @@ import com.interf.test.Constant;
 
 public class TestClient {
 
+	//TODO: http://www.ejbtutorial.com/programming/java-rmi-example-group-chat-implementation
+	
 	public static void main(String[] args) throws RemoteException, NotBoundException {
 		Registry registry = LocateRegistry.getRegistry("localhost", Constant.RMI_PORT);
 		CommonRemote remote = (CommonRemote) registry.lookup(Constant.RMI_ID);
@@ -20,6 +22,9 @@ public class TestClient {
 		
 		System.out.println("try to login with user: abc: " + remote.isLoginValid(acc1));
 		System.out.println("try to login with user: test: " + remote.isLoginValid(new AccountDTO("def", "def")));
+		for(;;){
+//			remote.broadcastMessage("abc", new Message)
+		}
 		
 	}
 }
