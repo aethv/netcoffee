@@ -2,7 +2,7 @@ drop table if exists ACCOUNTS
 drop table if exists ORDERS
 drop table if exists ORDER_ITEMS
 drop table if exists PRODUCTS
-create table ACCOUNTS (ACCOUNT_ID bigint not null auto_increment, DISPLAY_NAME varchar(255), LAST_LOGINED integer, STATUS integer, primary key (ACCOUNT_ID))
+create table ACCOUNTS (ACCOUNT_ID bigint not null auto_increment, PASSWORD varchar(255), DISPLAY_NAME varchar(255), LAST_LOGINED integer, STATUS integer, primary key (ACCOUNT_ID))
 create table ORDERS (ORDER_ID bigint not null auto_increment, AMOUNT double precision not null, STATUS integer not null, ACCOUNT_ID bigint not null, primary key (ORDER_ID))
 create table ORDER_ITEMS (ITEM_ID bigint not null auto_increment, PRODUCT_NAME varchar(255) not null, QUANLITY integer not null, SUB_TOTAL double precision not null, UNIT_COST double precision not null, ORDER_ID bigint not null, product_PRODUCT_ID bigint, primary key (ITEM_ID))
 create table PRODUCTS (PRODUCT_ID bigint not null auto_increment, PRODUCT_NAME varchar(255) not null, PRICE double precision not null, STATUS integer not null, STOCK integer not null, primary key (PRODUCT_ID))

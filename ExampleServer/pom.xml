@@ -4,15 +4,21 @@
 	<groupId>com.ae.netroom.server</groupId>
 	<artifactId>ExampleServer</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.ae.netroom.common</groupId>
 			<artifactId>ExampleCommon</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.googlecode.genericdao</groupId>
+			<artifactId>dao-hibernate</artifactId>
+			<version>1.2.0</version> <!-- use current version -->
+		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
@@ -30,6 +36,17 @@
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.clinet.StartServer</mainClass>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
