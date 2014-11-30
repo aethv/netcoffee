@@ -2,3 +2,5 @@ To build project, execute command: "mvn clean install" on these project respecti
 1. ExampleCommon
 2. ExampleClient
 3. ExampleServer
+
+abc def
