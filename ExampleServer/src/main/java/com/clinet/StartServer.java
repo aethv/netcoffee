@@ -14,8 +14,10 @@ public class StartServer {
 	
 	public static void main(String[] args) {
 		try{
+            System.out.println("Start Server");
+            System.setProperty("java.rmi.server.hostname", "localhost");
 			CommonRemote remoteObj = new ServerProcess();
-			Registry registry = LocateRegistry.createRegistry(Constant.RMI_PORT);
+			Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
 			registry.bind(Constant.RMI_ID, remoteObj);
 			
 			LOG.info("Server is started!!!");

@@ -11,7 +11,7 @@ public class Messenger extends UnicastRemoteObject implements MessgerInterface {
 	private static final long serialVersionUID = 1L;
 	private String username;
 	
-	protected Messenger(String username) throws RemoteException {
+	public Messenger(String username) throws RemoteException {
 		super();
 		this.username = username;
 	}

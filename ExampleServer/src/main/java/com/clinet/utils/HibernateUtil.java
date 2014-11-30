@@ -14,6 +14,7 @@ public class HibernateUtil {
 	
 	private static final String HIBERNATE_DIALECT = "hibernate.dialect";
 	private static final String HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
+	private static final String HIBERNATE_HBM2DDL_IMPORT_FILE = "hibernate.hbm2ddl.import_file";
 	private static final String HIBERNATE_SHOW_SQL = "hibernate.show_sql";
 	private static final String HIBERNATE_CONNECTION_DRIVER_CLASS = "hibernate.connection.driver_class";
 	private static final String HIBERNATE_CONNECTION_URL = "hibernate.connection.url";
@@ -51,6 +52,7 @@ public class HibernateUtil {
 	            .setProperty(C3P0_MAX_SIZE, ResourceUtils.getResourceName(C3P0_MAX_SIZE))
 	            .setProperty(C3P0_TIMEOUT, ResourceUtils.getResourceName(C3P0_TIMEOUT))
 	            .setProperty(C3P0_MAX_STATEMENTS, ResourceUtils.getResourceName(C3P0_MAX_STATEMENTS))
+                .setProperty(HIBERNATE_HBM2DDL_IMPORT_FILE, ResourceUtils.getResourceName(HIBERNATE_HBM2DDL_IMPORT_FILE))
 //	            .setProperty("hibernate.current_session_context_class", "jta")
 //	            .setProperty("hibernate.transaction.factory_class", "org.hibernate.transaction.JTATransactionFactory")
 	            ;

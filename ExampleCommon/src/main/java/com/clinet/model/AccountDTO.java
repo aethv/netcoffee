@@ -63,4 +63,9 @@ public class AccountDTO implements Serializable{
 		this.message = message;
 	}
 
+    @Override
+    public String toString()
+    {
+        return "{ username: " +username + " , password : " + password+"}";
+    }
 }

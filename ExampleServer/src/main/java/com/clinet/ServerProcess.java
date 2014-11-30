@@ -54,8 +54,8 @@ public class ServerProcess extends UnicastRemoteObject implements CommonRemote {
 
 	public String broadcastMessage(String s, MessgerInterface from)
 			throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+        System.out.println("Server said : '" + s + "' you bitch !!! ");
+        return null;
 	}
 
 }

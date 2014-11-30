@@ -13,7 +13,7 @@
 
 	<appender name="fileInfoAppender" class="org.apache.log4j.RollingFileAppender">
 		<param name="append" value="true" />
-		<param name="file" value="${catalina.base}/logs/ExampleCommon.log" />
+		<param name="file" value="~/netcoffee/logs/ExampleCommon.log" />
 		<param name="MaxFileSize" value="5Mb" />
 		<param name="Encoding" value="UTF-8" />
 		<param name="MaxBackupIndex" value="1000" />
