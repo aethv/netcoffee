@@ -8,12 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 import com.clinet.model.Account;
@@ -135,6 +130,8 @@ public class UIMain extends JFrame {
 		gbc_btnSetting.gridx = 1;
 		gbc_btnSetting.gridy = 1;
 		pnlController.add(btnSetting, gbc_btnSetting);
+
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 
 }
