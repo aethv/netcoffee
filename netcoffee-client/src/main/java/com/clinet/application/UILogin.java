@@ -282,6 +282,8 @@ public class UILogin extends UICommonFrame{
 		panel_3.setLayout(gl_panel_3);
 		pack();
 	}
+
+	public JButton getBtnLogin() { return btnLogin; }
 	
 	public JLabel getLblStatus() {
 		return lblStatus;

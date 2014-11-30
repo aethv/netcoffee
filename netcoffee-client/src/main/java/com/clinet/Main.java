@@ -3,8 +3,7 @@ package com.clinet;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +24,7 @@ import com.interf.test.SimpleMessenger;
 public class Main {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-	private UILogin uiLogin;
+	private UILogin uiLogin = null;
 	private UIMain uiMain;
 	
 	private CommonRemote cr;
@@ -104,7 +103,7 @@ public class Main {
 			Messenger mess = new SimpleMessenger(accountDTO);
 			
 			String ret = cr.login(mess);
-			if(StringUtils.isNotEmpty(ret)){
+			if(StringUtils.isNotEmpty(ret) && !ret.equals(Constant.LOGIN_FAILED)){
 				return true;
 			}
 		}catch(Exception ex){
@@ -144,6 +143,10 @@ public class Main {
 						isServerAlive = true;
 						updateServerStatus(Constant.STATUS_READY);
 						try_times = 1;
+						SwingUtilities.invokeLater(() -> {
+							if(!uiLogin.getBtnLogin().isEnabled())
+								uiLogin.getBtnLogin().setEnabled(true);
+						});
 					}
 				} catch (Exception e) {
 					LOGGER.debug("Unable to connect to server", e);

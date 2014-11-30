@@ -34,7 +34,8 @@ public class Main {
 		//TODO create progress bar for loading
 		
 		try{
-			startChatServer();
+			Thread rmi = new Thread(new RMIManager());
+			rmi.start();
 			
 			SwingUtilities.invokeLater(new Runnable() {
 				
@@ -65,21 +66,7 @@ public class Main {
 		}
 	}
 	
-	protected void startChatServer() throws Exception{
-		try {
-			LOGGER.debug("Creating connection for CommonRemote");
-			cr = new ServerProcess();
-			Registry registry = LocateRegistry.createRegistry(Constant.RMI_PORT_CHAT);
-			registry.bind(Constant.RMI_ID_CHAT, cr);
-			
-			LOGGER.info("Connection for CommonRemote is created");
-			
-		} catch (AlreadyBoundException | RemoteException e) {
-			LOGGER.debug("unable to initialize server service");
-			JOptionPane.showMessageDialog(null, "Unable to initialize Server service. \nPlease contact Administrator", "NetFood", JOptionPane.ERROR_MESSAGE);
-			throw new Exception("unable to initialize server chat service");
-		}
-	}
+
 	
 	public static void main(String[] args) {
 		//============================================================
@@ -101,5 +88,37 @@ public class Main {
 		//============================================================start application
 		Main.LOGGER.debug("staring main application");
 		new Main();
+	}
+
+	private class RMIManager implements Runnable{
+
+		@Override
+		public void run()
+		{
+			try
+			{
+				startChatServer();
+			}
+			catch (Exception e)
+			{
+				LOGGER.error("Could not start RMI service", e);
+			}
+		}
+
+		protected void startChatServer() throws Exception{
+			try {
+				LOGGER.debug("Creating connection for CommonRemote");
+				cr = new ServerProcess();
+				Registry registry = LocateRegistry.createRegistry(Constant.RMI_PORT_CHAT);
+				registry.bind(Constant.RMI_ID_CHAT, cr);
+
+				LOGGER.info("Connection for CommonRemote is created");
+
+			} catch (AlreadyBoundException | RemoteException e) {
+				LOGGER.debug("unable to initialize server service");
+				JOptionPane.showMessageDialog(null, "Unable to initialize Server service. \nPlease contact Administrator", "NetFood", JOptionPane.ERROR_MESSAGE);
+				throw new Exception("unable to initialize server chat service");
+			}
+		}
 	}
 }
