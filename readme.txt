@@ -3,4 +3,4 @@ To build project, execute command: "mvn clean install" on these project respecti
 2. ExampleClient
 3. ExampleServer
 
-abc def
+88888 asdasdasdasd abc def
