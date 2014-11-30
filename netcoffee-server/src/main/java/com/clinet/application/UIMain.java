@@ -17,7 +17,7 @@ import com.clinet.model.Account;
  * @author ThangNT6
  *
  */
-public class UIMain extends JFrame {
+public class UIMain extends UICommonFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,6 +37,7 @@ public class UIMain extends JFrame {
 	private JButton btnBroadcast;
 
 	public UIMain() {
+		super("UIMain");
 		//this version not have chat
 		initComponents();
 		
@@ -61,7 +62,8 @@ public class UIMain extends JFrame {
 		uiChat.addAccount(new Account("client 9", "123456", true));
 	}
 
-	private void initComponents() {
+	@Override
+	protected void initComponents() {
 		setTitle("NetCoffee Food Supplier");
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -132,6 +134,12 @@ public class UIMain extends JFrame {
 		pnlController.add(btnSetting, gbc_btnSetting);
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	}
+
+	@Override
+	public void updateServerStatus(int status)
+	{
+		System.out.println(status);
 	}
 
 }
