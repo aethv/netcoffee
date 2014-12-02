@@ -154,4 +154,10 @@ public class UIMain extends UICommonFrame {
 		System.out.println(status);
 	}
 
+	@Override
+	public void updateServerStatus(int status)
+	{
+		System.out.println(status);
+	}
+
 }

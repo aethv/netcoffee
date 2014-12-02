@@ -111,7 +111,6 @@ public class Main {
 				cr = new ServerProcess();
 				Registry registry = LocateRegistry.createRegistry(Constant.RMI_PORT);
 				registry.bind(Constant.RMI_ID, cr);
-
 				LOGGER.info("Connection for CommonRemote is created");
 
 			} catch (AlreadyBoundException | RemoteException e) {
