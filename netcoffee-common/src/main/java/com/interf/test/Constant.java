@@ -1,5 +1,10 @@
 package com.interf.test;
 
+/**
+ * 
+ * @author aethv
+ * @version $Id: $
+ */
 public class Constant {
 
 	
@@ -19,9 +24,5 @@ public class Constant {
 	public static final int MAX_TRY = 3;
 	
 	public static final String LOGIN_FAILED = "LOGIN_FAILED";
-	
-	public static final int RMI_PORT_CHAT = 9511;
-	public static final String RMI_ID_CHAT = "NetFood-Chat";
-	
 	
 }
