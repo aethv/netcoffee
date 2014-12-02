@@ -94,7 +94,7 @@ public class UILogin extends UICommonFrame{
 			if(main.doLogin(txtUsername.getText(), txtPassword.getPassword().toString())) {
 				lblStatus.setText("login successful... Please wait");
 			}else{
-				lblStatus.setText("Account not found");
+				JOptionPane.showMessageDialog(this, "Account not found", Constant.APP_TITLE, JOptionPane.ERROR_MESSAGE);
 			}
 		}catch(Exception ex){
 			LOGGER.error("Exception when login", ex);

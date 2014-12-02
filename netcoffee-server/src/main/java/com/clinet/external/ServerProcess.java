@@ -39,10 +39,10 @@ public class ServerProcess extends UnicastRemoteObject implements CommonRemote {
 			LOGGER.debug("get acc from db: " + acc);
 			
 			if(acc == null){
-				token = StringUtils.EMPTY;
+				return StringUtils.EMPTY;
 			}
 			if(!acc.isActive()){
-				token = Constant.LOGIN_FAILED;
+				return Constant.LOGIN_FAILED;
 			}
 			
 			LOGGER.info("logined successfully by user: " + acc.getUsername());
