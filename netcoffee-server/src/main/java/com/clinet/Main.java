@@ -54,7 +54,6 @@ public class Main {
 					mainApp.addWindowStateListener(new WindowAdapter() {
 						@Override
 						public void windowActivated(WindowEvent e) {
-							// TODO Auto-generated method stub
 							super.windowActivated(e);
 						}
 					});

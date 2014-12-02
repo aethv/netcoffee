@@ -127,7 +127,7 @@ public class Main {
 	 */
 	private class ThreadServerMonitoring extends Thread {
 		
-		int try_times = 1;
+		int try_times = 0;
 		
 		public void run() {
 			while(true){
@@ -142,12 +142,12 @@ public class Main {
 						LOGGER.debug("Server ping successfully");
 						isServerAlive = true;
 						updateServerStatus(Constant.STATUS_READY);
-						try_times = 1;
+						try_times = 0;
 						SwingUtilities.invokeLater(() -> {
 							if(!uiLogin.getBtnLogin().isEnabled())
 								uiLogin.getBtnLogin().setEnabled(true);
 						});
-						sleep(5000);
+						sleep(10000);
 					}
 				} catch (Exception e) {
 					LOGGER.debug("Unable to connect to server", e);
