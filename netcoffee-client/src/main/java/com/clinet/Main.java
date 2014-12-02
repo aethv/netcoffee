@@ -3,7 +3,9 @@ package com.clinet;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,8 +31,6 @@ public class Main {
 	
 	private CommonRemote cr;
 	private Registry registry;
-	
-	
 	
 	private boolean isServerAlive = false;
 	
@@ -135,8 +135,8 @@ public class Main {
 					LOGGER.debug("connecting to server");
 					updateServerStatus(Constant.STATUS_PROCESSING);					
 					
-					registry = LocateRegistry.getRegistry(ResourceUtils.getResourceName("netFood.server.address"), Constant.RMI_PORT_CHAT);
-					cr = (CommonRemote) registry.lookup(Constant.RMI_ID_CHAT);
+					registry = LocateRegistry.getRegistry(ResourceUtils.getResourceName("netFood.server.address"), Constant.RMI_PORT);
+					cr = (CommonRemote) registry.lookup(Constant.RMI_ID);
 					
 					if(cr != null && cr.pingServer(CommonUtils.getLocalIPAddress()) > 0) {
 						LOGGER.debug("Server ping successfully");
@@ -147,6 +147,7 @@ public class Main {
 							if(!uiLogin.getBtnLogin().isEnabled())
 								uiLogin.getBtnLogin().setEnabled(true);
 						});
+						sleep(5000);
 					}
 				} catch (Exception e) {
 					LOGGER.debug("Unable to connect to server", e);
@@ -164,7 +165,7 @@ public class Main {
 				try {
 					if(try_times < Constant.MAX_TRY)
 						LOGGER.debug("sleep");
-						sleep(2000);
+						sleep(3000);
 				} catch (Exception e1) {}
 			}
 		}

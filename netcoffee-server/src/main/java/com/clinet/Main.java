@@ -109,14 +109,14 @@ public class Main {
 			try {
 				LOGGER.debug("Creating connection for CommonRemote");
 				cr = new ServerProcess();
-				Registry registry = LocateRegistry.createRegistry(Constant.RMI_PORT_CHAT);
-				registry.bind(Constant.RMI_ID_CHAT, cr);
+				Registry registry = LocateRegistry.createRegistry(Constant.RMI_PORT);
+				registry.bind(Constant.RMI_ID, cr);
 
 				LOGGER.info("Connection for CommonRemote is created");
 
 			} catch (AlreadyBoundException | RemoteException e) {
 				LOGGER.debug("unable to initialize server service");
-				JOptionPane.showMessageDialog(null, "Unable to initialize Server service. \nPlease contact Administrator", "NetFood", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Unable to initialize Server service. \nPlease contact Administrator", Constant.APP_TITLE, JOptionPane.ERROR_MESSAGE);
 				throw new Exception("unable to initialize server chat service");
 			}
 		}
