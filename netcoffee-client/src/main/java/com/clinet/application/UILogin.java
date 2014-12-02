@@ -15,7 +15,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -28,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.clinet.Main;
 import com.clinet.utils.CommonUtils;
+import com.clinet.utils.MessageUtils;
 import com.clinet.utils.ResourceUtils;
 import com.interf.test.Constant;
 
@@ -94,7 +94,7 @@ public class UILogin extends UICommonFrame{
 			if(main.doLogin(txtUsername.getText(), txtPassword.getPassword().toString())) {
 				lblStatus.setText("login successful... Please wait");
 			}else{
-				JOptionPane.showMessageDialog(this, "Account not found", Constant.APP_TITLE, JOptionPane.ERROR_MESSAGE);
+				MessageUtils.showError("Account not found");
 			}
 		}catch(Exception ex){
 			LOGGER.error("Exception when login", ex);
@@ -174,7 +174,7 @@ public class UILogin extends UICommonFrame{
 		protected void done() {
 			super.done();
 			if(!serverIsReady){
-				JOptionPane.showMessageDialog(null, "Server is not ready!!! Please close and try again", "NetFood", JOptionPane.ERROR_MESSAGE);
+				MessageUtils.showError("Server is not ready!!! Please close and try again");
 				btnLogin.setEnabled(false);
 				close();
 			}else{

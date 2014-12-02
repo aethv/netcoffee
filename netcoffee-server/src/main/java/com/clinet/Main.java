@@ -7,7 +7,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -15,17 +14,16 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.clinet.application.UIChat;
 import com.clinet.application.UIMain;
 import com.clinet.external.ServerProcess;
 import com.clinet.utils.CommonUtils;
+import com.clinet.utils.MessageUtils;
 import com.interf.test.CommonRemote;
 import com.interf.test.Constant;
 
 public class Main {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-	private UIChat uiChat;
 	private UIMain mainApp;
 	private CommonRemote cr;
 	
@@ -114,7 +112,7 @@ public class Main {
 
 			} catch (AlreadyBoundException | RemoteException e) {
 				LOGGER.debug("unable to initialize server service");
-				JOptionPane.showMessageDialog(null, "Unable to initialize Server service. \nPlease contact Administrator", Constant.APP_TITLE, JOptionPane.ERROR_MESSAGE);
+				MessageUtils.showError("Server is not ready!!! Please close and try again");
 				throw new Exception("unable to initialize server chat service");
 			}
 		}

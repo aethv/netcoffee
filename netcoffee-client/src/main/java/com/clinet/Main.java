@@ -3,7 +3,6 @@ package com.clinet;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -17,6 +16,7 @@ import com.clinet.application.UIMain;
 import com.clinet.model.AccountDTO;
 import com.clinet.utils.CommonUtils;
 import com.clinet.utils.EncryptUtils;
+import com.clinet.utils.MessageUtils;
 import com.clinet.utils.ResourceUtils;
 import com.interf.test.CommonRemote;
 import com.interf.test.Constant;
@@ -158,7 +158,7 @@ public class Main {
 				if(!isServerAlive && try_times == Constant.MAX_TRY){
 					try{
 						LOGGER.debug("Attempt reconnect " + Constant.MAX_TRY + " times but failed. Waiting " + Constant.MAX_TRY + "s for next try");
-						JOptionPane.showMessageDialog(null, "Server is not ready!!! Please restart app and try again", Constant.APP_TITLE, JOptionPane.ERROR_MESSAGE);
+						MessageUtils.showError("Server is not ready!!! Please restart app and try again");
 						doExit();
 					}catch(Exception e){}
 				}
