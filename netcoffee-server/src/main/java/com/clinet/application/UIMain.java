@@ -28,7 +28,7 @@ public class UIMain extends UICommonFrame {
 	// =====Variable define
 	private JPanel pnlTop;
 	private JPanel pnlBottom;
-	private JPanel pnlController;
+	private JPanel pnlMain;
 	private UIChat uiChat;
 
 	private JLabel lblTitle;
@@ -46,7 +46,7 @@ public class UIMain extends UICommonFrame {
 		initComponents();
 		
 		uiChat = new UIChat();
-		this.add(uiChat, BorderLayout.EAST);
+		getContentPane().add(uiChat, BorderLayout.EAST);
 		
 		// ===For test
 		addTestAccountList();
@@ -100,16 +100,16 @@ public class UIMain extends UICommonFrame {
 		lblCopyright.setFont(new Font("Monotype Corsiva", Font.ITALIC, 14));
 		pnlBottom.add(lblCopyright);
 
-		pnlController = new JPanel();
-		pnlController.setBorder(new TitledBorder(null, "Controller",
+		pnlMain = new JPanel();
+		pnlMain.setBorder(new TitledBorder(null, "Controller",
 				TitledBorder.LEADING, TitledBorder.TOP, null, Color.DARK_GRAY));
-		getContentPane().add(pnlController, BorderLayout.CENTER);
-		GridBagLayout gbl_pnlController = new GridBagLayout();
-		gbl_pnlController.columnWidths = new int[] { 50, 50 };
-		gbl_pnlController.rowHeights = new int[] { 50, 50 };
-		gbl_pnlController.columnWeights = new double[] { 0.0, 0.0 };
-		gbl_pnlController.rowWeights = new double[] { 0.0, 0.0 };
-		pnlController.setLayout(gbl_pnlController);
+		getContentPane().add(pnlMain, BorderLayout.CENTER);
+		GridBagLayout gbl_pnlMain = new GridBagLayout();
+		gbl_pnlMain.columnWidths = new int[] { 50, 50 };
+		gbl_pnlMain.rowHeights = new int[] { 50, 50 };
+		gbl_pnlMain.columnWeights = new double[] { 0.0, 0.0 };
+		gbl_pnlMain.rowWeights = new double[] { 0.0, 0.0 };
+		pnlMain.setLayout(gbl_pnlMain);
 
 		btnAccount = new JButton("");
 		btnAccount.setIcon(new ImageIcon(UIMain.class
@@ -118,7 +118,7 @@ public class UIMain extends UICommonFrame {
 		gbc_btnAccount.insets = new Insets(10, 10, 10, 10);
 		gbc_btnAccount.gridx = 0;
 		gbc_btnAccount.gridy = 0;
-		pnlController.add(btnAccount, gbc_btnAccount);
+		pnlMain.add(btnAccount, gbc_btnAccount);
 
 		btnOrders = new JButton("");
 		btnOrders.setIcon(new ImageIcon(UIMain.class
@@ -127,7 +127,7 @@ public class UIMain extends UICommonFrame {
 		gbc_btnOrders.insets = new Insets(10, 10, 10, 10);
 		gbc_btnOrders.gridx = 0;
 		gbc_btnOrders.gridy = 1;
-		pnlController.add(btnOrders, gbc_btnOrders);
+		pnlMain.add(btnOrders, gbc_btnOrders);
 
 		btnFood = new JButton("");
 		btnFood.setIcon(new ImageIcon(UIMain.class
@@ -136,7 +136,7 @@ public class UIMain extends UICommonFrame {
 		gbc_btnFood.insets = new Insets(10, 10, 10, 10);
 		gbc_btnFood.gridx = 1;
 		gbc_btnFood.gridy = 0;
-		pnlController.add(btnFood, gbc_btnFood);
+		pnlMain.add(btnFood, gbc_btnFood);
 
 		btnSetting = new JButton("");
 		btnSetting.setIcon(new ImageIcon(UIMain.class
@@ -145,7 +145,7 @@ public class UIMain extends UICommonFrame {
 		gbc_btnSetting.insets = new Insets(10, 10, 10, 10);
 		gbc_btnSetting.gridx = 1;
 		gbc_btnSetting.gridy = 1;
-		pnlController.add(btnSetting, gbc_btnSetting);
+		pnlMain.add(btnSetting, gbc_btnSetting);
 	}
 
 	@Override
