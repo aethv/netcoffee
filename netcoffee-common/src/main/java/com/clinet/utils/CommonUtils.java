@@ -82,7 +82,7 @@ public class CommonUtils {
 		return null;
 	}
 	
-	public JProgressBar getProgressBar(){
+	public static JProgressBar getProgressBar(){
 		JProgressBar bar = new JProgressBar();
 		
 		return bar;

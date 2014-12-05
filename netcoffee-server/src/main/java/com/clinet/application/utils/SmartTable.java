@@ -1,7 +1,10 @@
 package com.clinet.application.utils;
 
 import java.awt.Component;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.EventListener;
+import java.util.EventObject;
 import java.util.List;
 import java.util.Vector;
 
@@ -27,15 +30,43 @@ public class SmartTable extends JTable{
 	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = LoggerFactory.getLogger(SmartTable.class);
 	
-	private MyTableModel model;
+	private MyTableModel model = new MyTableModel();
 	private Vector<Vector<Object>> dataSource = new Vector<Vector<Object>>();
 	private Vector<String> headerSource = new Vector<String>();
-	private int[] colWidth;
 	
 	public SmartTable() {
-		model = new MyTableModel();
+		initialize();
 	}
 	
+	private void initialize() {
+		//Mass data of table
+		String[] headers = {"Title 1", "Title 2", "Title 3", "Title 4"};
+		Vector<Object> vRow1 = new Vector<Object>(Arrays.asList(new String[]{"Row 1-1", "Row 1-2", "Row 1-3", "Row 1-4"}));;
+		Vector<Object> vRow2 = new Vector<Object>(Arrays.asList(new String[]{"Row 2-1", "Row 2-2", "Row 2-3", "Row 2-4"}));;
+		Vector<Object> vRow3 = new Vector<Object>(Arrays.asList(new String[]{"Row 3-1", "Row 3-2", "Row 3-3", "Row 3-4"}));;
+		Vector<Object> vRow4 = new Vector<Object>(Arrays.asList(new String[]{"Row 4-1", "Row 4-2", "Row 4-3", "Row 4-4"}));;
+		Vector<Vector<Object>> vRows = new Vector<Vector<Object>>(Arrays.asList(vRow1, vRow2, vRow3, vRow4));
+		setData(vRows, headers, new int[]{50, 50, 50, 50});
+		
+		setSelectionBackground(new java.awt.Color(255, 255, 153));
+		setSelectionForeground(new java.awt.Color(0, 0, 0));
+		
+		//Add event
+		addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableMouseClicked(evt);
+            }
+		});
+	}
+
+	protected void TableMouseClicked(MouseEvent evt) {
+		if (evt.getClickCount() == 2) {
+            fireMouseDoubleClickEvent(new MyEvent(this));
+        } else {
+            fireMouseClickEvent(new MyEvent(this));
+        }
+	}
+
 	public void setData(Vector<Vector<Object>> dataValue, String[] headerName, int colWidth[]) {
 		try{
 			headerSource.clear();
@@ -45,11 +76,32 @@ public class SmartTable extends JTable{
 			model.setDataVector(dataValue, headerSource);
 			this.setModel(model);
 			
+			//===============================
 			initColumntable();
+			for(int i = 0; i < model.getColumnCount(); i++){
+				getColumnModel().getColumn(i).setHeaderValue(headerSource.get(i));
+				getColumnModel().getColumn(i).setPreferredWidth(colWidth[i]);
+			}
+			
 		}catch(Exception ex){
 			LOGGER.error(ex.getMessage(), ex);
 			MessageUtils.showError("Unable to set data: " + ex.getMessage());
 		}
+	}
+	
+	public void deleteRow(int rowIdx){
+		dataSource.remove(rowIdx);
+		model.fireTableRowsDeleted(rowIdx, rowIdx);
+	}
+	
+	public void deleteRow(Vector<Object> items){
+		int rowIdx = dataSource.indexOf(items);
+		dataSource.remove(items);
+		model.fireTableRowsDeleted(rowIdx, rowIdx);
+	}
+	
+	public void updateRow(Vector<Object> item, int rowIdx){
+		
 	}
 	
 	private void initColumntable() {
@@ -65,7 +117,7 @@ public class SmartTable extends JTable{
         	}
         }
 	}
-
+	
 	private void initColumnTableToCheckBox(int column) {
         getColumnModel().getColumn(column).setCellEditor(new MyTableCellCheckBoxEditor());
         getColumnModel().getColumn(column).setCellRenderer(new MyTableCellCheckBoxRender());
@@ -75,6 +127,11 @@ public class SmartTable extends JTable{
         getColumnModel().getColumn(column).setCellEditor(new MyTableCellComboBoxEditor(source));
     }
 	
+	
+	public void setEditable(boolean b){
+		model.setEditable(b);
+	}
+	
 	private class MyTableModel extends DefaultTableModel{
 		
 		/**
@@ -83,14 +140,6 @@ public class SmartTable extends JTable{
 		private static final long serialVersionUID = 1L;
 		private boolean isEditable = false;
 		
-		public MyTableModel(){
-			this(false);
-		}
-		
-		public MyTableModel(boolean isEditable){
-			this.isEditable = isEditable;
-		}
-
         public void setEditable(boolean isEditable) {
         	this.isEditable = isEditable;
         }
@@ -101,7 +150,21 @@ public class SmartTable extends JTable{
         }
 	}
     
-    private class MyTableCellCheckBoxEditor extends AbstractCellEditor implements TableCellEditor{
+    
+	public void newRow(Vector<Object> row, boolean isSelectNewRow) {
+		dataSource.add(row);
+		model.fireTableRowsInserted(model.getRowCount() -1, model.getRowCount() -1);
+		setRowSelectionInterval(model.getRowCount() -1, model.getRowCount() -1);
+		scrollRectToVisible(getCellRect(getSelectedRow(), 0, true));
+		
+	}
+	
+	public void updateRow(Vector<Object> row, int idx, boolean isSelectNewRow){
+		dataSource.set(idx, row);
+		model.fireTableRowsUpdated(idx, idx);
+	}
+	
+	private class MyTableCellCheckBoxEditor extends AbstractCellEditor implements TableCellEditor{
 
 		/**
 		 * 
@@ -122,7 +185,8 @@ public class SmartTable extends JTable{
 		}
     }
     
-    private class MyTableCellCheckBoxRender extends DefaultTableCellRenderer implements TableCellRenderer{
+    
+	private class MyTableCellCheckBoxRender extends DefaultTableCellRenderer implements TableCellRenderer{
 
 		/**
 		 * 
@@ -139,7 +203,8 @@ public class SmartTable extends JTable{
     	
     }
     
-    /**
+    
+	/**
      * ComboBox editor for JTable
      * @author aethv
      *
@@ -176,4 +241,54 @@ public class SmartTable extends JTable{
 			return cbo;
 		}
     }
+    
+    
+    //=====================================================
+    //=======================================EVENT LISTENER
+	// Create the listener list
+	protected javax.swing.event.EventListenerList lstEventListener = new javax.swing.event.EventListenerList();
+
+	public void addSmartTableEventListener(SmartTableEventListener listener) {
+		lstEventListener.add(SmartTableEventListener.class, listener);
+	}
+
+	public void removeSmartTableEventListener(SmartTableEventListener listener) {
+		lstEventListener.remove(SmartTableEventListener.class, listener);
+	}
+
+	void fireMouseDoubleClickEvent(MyEvent evt) {
+		Object[] listeners = lstEventListener.getListenerList();
+		for (int i = 0; i < listeners.length; i++) {
+			if (listeners[i] == SmartTableEventListener.class) {
+				((SmartTableEventListener) listeners[i]).mouseDoubleClick(evt);
+			}
+		}
+	}
+	
+    void fireMouseClickEvent(MyEvent evt) {
+        Object[] listeners = lstEventListener.getListenerList();
+        for (int i = 0; i < listeners.length; i++) {
+            if (listeners[i] == SmartTableEventListener.class) {
+                ((SmartTableEventListener) listeners[i]).mouseClick(evt);
+            }
+        }
+    }
+
+	// Declare the event. It must extend EventObject.
+	public class MyEvent extends EventObject {
+
+		private static final long serialVersionUID = 1L;
+
+		public MyEvent(Object source) {
+			super(source);
+		}
+	}
+
+	
+	public interface SmartTableEventListener extends EventListener {
+
+		public void mouseDoubleClick(MyEvent evt);
+
+		public void mouseClick(MyEvent evt);
+	}
 }
