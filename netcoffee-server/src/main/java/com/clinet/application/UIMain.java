@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,6 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.clinet.model.Account;
 
@@ -24,12 +29,14 @@ import com.clinet.model.Account;
 public class UIMain extends UICommonFrame {
 
 	private static final long serialVersionUID = 1L;
+	private static Logger LOGGER = LoggerFactory.getLogger(UIMain.class);
 
 	// =====Variable define
 	private JPanel pnlTop;
 	private JPanel pnlBottom;
 	private JPanel pnlMain;
-	private UIChat uiChat;
+	private UCChat uiChat;
+	private UCUserManagement uiUserManagement;
 
 	private JLabel lblTitle;
 	private JLabel lblCopyright;
@@ -45,7 +52,7 @@ public class UIMain extends UICommonFrame {
 		//this version not have chat
 		initComponents();
 		
-		uiChat = new UIChat();
+		uiChat = new UCChat();
 		getContentPane().add(uiChat, BorderLayout.EAST);
 		
 		// ===For test
@@ -112,6 +119,11 @@ public class UIMain extends UICommonFrame {
 		pnlMain.setLayout(gbl_pnlMain);
 
 		btnAccount = new JButton("");
+		btnAccount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnAccountActionPerformed(e);
+			}
+		});
 		btnAccount.setIcon(new ImageIcon(UIMain.class
 				.getResource("/icons/client-128x128.png")));
 		GridBagConstraints gbc_btnAccount = new GridBagConstraints();
@@ -121,6 +133,11 @@ public class UIMain extends UICommonFrame {
 		pnlMain.add(btnAccount, gbc_btnAccount);
 
 		btnOrders = new JButton("");
+		btnOrders.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnOrdersActionPerformed(e);
+			}
+		});
 		btnOrders.setIcon(new ImageIcon(UIMain.class
 				.getResource("/icons/order-128x128.png")));
 		GridBagConstraints gbc_btnOrders = new GridBagConstraints();
@@ -130,6 +147,11 @@ public class UIMain extends UICommonFrame {
 		pnlMain.add(btnOrders, gbc_btnOrders);
 
 		btnFood = new JButton("");
+		btnFood.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnFoodActionPerformed(e);
+			}
+		});
 		btnFood.setIcon(new ImageIcon(UIMain.class
 				.getResource("/icons/food-128x128.png")));
 		GridBagConstraints gbc_btnFood = new GridBagConstraints();
@@ -139,6 +161,11 @@ public class UIMain extends UICommonFrame {
 		pnlMain.add(btnFood, gbc_btnFood);
 
 		btnSetting = new JButton("");
+		btnSetting.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnSettingActionPerformed(e);
+			}
+		});
 		btnSetting.setIcon(new ImageIcon(UIMain.class
 				.getResource("/icons/setting-128x128.png")));
 		GridBagConstraints gbc_btnSetting = new GridBagConstraints();
@@ -148,10 +175,42 @@ public class UIMain extends UICommonFrame {
 		pnlMain.add(btnSetting, gbc_btnSetting);
 	}
 
+	protected void btnSettingActionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void btnOrdersActionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void btnFoodActionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void btnAccountActionPerformed(ActionEvent e) {
+		LOGGER.debug("btnAccount is invoked");
+		if(uiUserManagement == null){
+			LOGGER.debug("btnAccount first time clicked");
+			uiUserManagement = new UCUserManagement(this);
+		}
+		LOGGER.debug("activing User Management");
+		uiUserManagement.activePanel();
+		pnlMain.setVisible(false);
+		getContentPane().add(uiUserManagement, BorderLayout.CENTER);
+	}
+	
 	@Override
 	public void updateServerStatus(int status)
 	{
 		System.out.println(status);
+	}
+
+	public void activeMain(UICommonPanel panel) {
+		panel.setVisible(false);
+		pnlMain.setVisible(true);
 	}
 
 }

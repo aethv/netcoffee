@@ -25,7 +25,7 @@ import javax.swing.border.CompoundBorder;
 
 import com.clinet.model.Account;
 
-public class UIChat extends JPanel {
+public class UCChat extends JPanel {
 
 	/**
 	 * 
@@ -44,9 +44,9 @@ public class UIChat extends JPanel {
 	 * Create the panel.
 	 * 
 	 */
-	public UIChat() {
+	public UCChat() {
 		initComponents();
-		loadingIcon = new ImageIcon(UIChat.class.getResource("/icons/loading-25x25.gif"));
+		loadingIcon = new ImageIcon(UCChat.class.getResource("/icons/loading-25x25.gif"));
 	}
 	
 	public void startChatServer() {

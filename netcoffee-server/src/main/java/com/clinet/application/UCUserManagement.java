@@ -2,6 +2,8 @@ package com.clinet.application;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -13,7 +15,9 @@ import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
-public class UIUserManagement extends JPanel {
+import com.clinet.application.utils.SmartTable;
+
+public class UCUserManagement extends UICommonPanel {
 
 	/**
 	 * 
@@ -27,15 +31,23 @@ public class UIUserManagement extends JPanel {
 	private JTable table;
 	private JScrollPane scrollPane;
 	private DefaultTableModel model;
+	private UIMain main;
 	
 	/**
 	 * Create the panel.
 	 */
-	public UIUserManagement() {
+	public UCUserManagement(UIMain main) {
+		super();
+		this.main = main;
 		initialize();
 		
 		//init table generic table model
-		model = new DefaultTableModel();
+		table = new SmartTable();
+	}
+	
+	@Override
+	protected void activePanel() {
+		setVisible(true);
 	}
 
 	private void initialize() {
@@ -52,62 +64,51 @@ public class UIUserManagement extends JPanel {
 		add(pnlBottom, BorderLayout.SOUTH);
 		
 		btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCloseActionPerformed(e);
+			}
+		});
 		btnClose.setMnemonic('C');
 		
 		btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnSaveActionPerformed(e);
+			}
+		});
 		btnSave.setMnemonic('S');
 		GroupLayout gl_pnlBottom = new GroupLayout(pnlBottom);
 		gl_pnlBottom.setHorizontalGroup(
 			gl_pnlBottom.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_pnlBottom.createSequentialGroup()
-					.addContainerGap()
 					.addComponent(btnSave)
-					.addPreferredGap(ComponentPlacement.RELATED, 314, Short.MAX_VALUE)
-					.addComponent(btnClose)
-					.addContainerGap())
+					.addPreferredGap(ComponentPlacement.RELATED, 334, Short.MAX_VALUE)
+					.addComponent(btnClose))
 		);
 		gl_pnlBottom.setVerticalGroup(
-			gl_pnlBottom.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_pnlBottom.createSequentialGroup()
-					.addContainerGap()
+			gl_pnlBottom.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_pnlBottom.createSequentialGroup()
+					.addContainerGap(22, Short.MAX_VALUE)
 					.addGroup(gl_pnlBottom.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnClose)
-						.addComponent(btnSave))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(btnSave)))
 		);
 		pnlBottom.setLayout(gl_pnlBottom);
 		
 		pnlMain = new JPanel();
 		add(pnlMain, BorderLayout.CENTER);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-			},
-			new String[] {
-				"", "Username", "Display Name", "Status", "Last logined"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, true, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(35);
-		table.getColumnModel().getColumn(1).setPreferredWidth(85);
-		table.getColumnModel().getColumn(2).setPreferredWidth(150);
-		table.getColumnModel().getColumn(2).setMinWidth(75);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(4).setResizable(false);
-		table.getColumnModel().getColumn(4).setPreferredWidth(100);
-		
+		table = new JTable();		
 		scrollPane = new JScrollPane(table);
 		pnlMain.add(scrollPane);
+	}
+
+	protected void btnSaveActionPerformed(ActionEvent e) {
+		
+	}
+
+	protected void btnCloseActionPerformed(ActionEvent e) {
+		main.activeMain(this);
 	}
 }
