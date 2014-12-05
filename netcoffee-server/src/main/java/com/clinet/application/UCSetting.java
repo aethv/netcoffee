@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.clinet.application.utils.SmartTable;
 
-public class UCUserManagement extends UICommonPanel {
+public class UCSetting extends UICommonPanel {
 
 	/**
 	 * 
@@ -36,7 +36,7 @@ public class UCUserManagement extends UICommonPanel {
 	/**
 	 * Create the panel.
 	 */
-	public UCUserManagement(UIMain main) {
+	public UCSetting(UIMain main) {
 		super();
 		this.main = main;
 		initComponents();
@@ -71,7 +71,7 @@ public class UCUserManagement extends UICommonPanel {
 		pnlTop = new JPanel();
 		add(pnlTop, BorderLayout.NORTH);
 		
-		JLabel lblTitle = new JLabel("User Management");
+		JLabel lblTitle = new JLabel("Setting");
 		lblTitle.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		pnlTop.add(lblTitle);
 		

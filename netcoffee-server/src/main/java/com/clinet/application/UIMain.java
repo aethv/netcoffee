@@ -36,7 +36,10 @@ public class UIMain extends UICommonFrame {
 	private JPanel pnlBottom;
 	private JPanel pnlMain;
 	private UCChat uiChat;
-	private UCUserManagement uiUserManagement;
+	private UCUserManagement ucUserManagement;
+	private UCFood ucFood;
+	private UCOrders ucOrders;
+	private UCSetting ucSetting;
 
 	private JLabel lblTitle;
 	private JLabel lblCopyright;
@@ -176,30 +179,51 @@ public class UIMain extends UICommonFrame {
 	}
 
 	protected void btnSettingActionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		LOGGER.debug("btnSetting is invoked");
+		if(ucSetting == null){
+			LOGGER.debug("btnSetting first time clicked");
+			ucSetting = new UCSetting(this);
+		}
+		LOGGER.debug("activing Setting frame");
+		ucSetting.activePanel();
+		pnlMain.setVisible(false);
+		getContentPane().add(ucSetting, BorderLayout.CENTER);
 	}
 
 	protected void btnOrdersActionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		LOGGER.debug("btnOrders is invoked");
+		if(ucOrders == null){
+			LOGGER.debug("btnOrders first time clicked");
+			ucOrders = new UCOrders(this);
+		}
+		LOGGER.debug("activing Order Management");
+		ucOrders.activePanel();
+		pnlMain.setVisible(false);
+		getContentPane().add(ucOrders, BorderLayout.CENTER);
 	}
 
 	protected void btnFoodActionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		LOGGER.debug("btnFood is invoked");
+		if(ucFood == null){
+			LOGGER.debug("btnFood first time clicked");
+			ucFood = new UCFood(this);
+		}
+		LOGGER.debug("activing Food Management");
+		ucFood.activePanel();
+		pnlMain.setVisible(false);
+		getContentPane().add(ucFood, BorderLayout.CENTER);
 	}
 
 	protected void btnAccountActionPerformed(ActionEvent e) {
 		LOGGER.debug("btnAccount is invoked");
-		if(uiUserManagement == null){
+		if(ucUserManagement == null){
 			LOGGER.debug("btnAccount first time clicked");
-			uiUserManagement = new UCUserManagement(this);
+			ucUserManagement = new UCUserManagement(this);
 		}
 		LOGGER.debug("activing User Management");
-		uiUserManagement.activePanel();
+		ucUserManagement.activePanel();
 		pnlMain.setVisible(false);
-		getContentPane().add(uiUserManagement, BorderLayout.CENTER);
+		getContentPane().add(ucUserManagement, BorderLayout.CENTER);
 	}
 	
 	@Override

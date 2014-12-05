@@ -44,6 +44,7 @@ public class Main {
 					mainApp.setVisible(true);
 					
 					mainApp.addWindowListener(new WindowAdapter() {
+						
 						@Override
 						public void windowClosing(WindowEvent e) {
 							Main.LOGGER.debug("main app closing");
@@ -62,8 +63,6 @@ public class Main {
 			System.exit(1);
 		}
 	}
-	
-
 	
 	public static void main(String[] args) {
 		//============================================================
