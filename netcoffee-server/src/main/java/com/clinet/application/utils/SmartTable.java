@@ -1,6 +1,9 @@
 package com.clinet.application.utils;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.EventListener;
@@ -9,8 +12,10 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.AbstractCellEditor;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -30,33 +35,48 @@ public class SmartTable extends JTable{
 	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = LoggerFactory.getLogger(SmartTable.class);
 	
+	private static final Color ROW_COLOR_ODD = Color.LIGHT_GRAY;
+	private static final Color ROW_COLOR_EVEN = new java.awt.Color(255, 255, 255);
+	private static final Color ROW_COLOR_SELECTED = new java.awt.Color(255, 255, 153);
+	
 	private MyTableModel model = new MyTableModel();
+	private MyTableCellRender myCellRender = new MyTableCellRender();
+	
 	private Vector<Vector<Object>> dataSource = new Vector<Vector<Object>>();
 	private Vector<String> headerSource = new Vector<String>();
+	private int[] updatableTableCell;
 	
 	public SmartTable() {
 		initialize();
+		this.setDefaultRenderer(Object.class, myCellRender);
+		
+		repaint();
 	}
 	
 	private void initialize() {
 		//Mass data of table
 		String[] headers = {"Title 1", "Title 2", "Title 3", "Title 4"};
-		Vector<Object> vRow1 = new Vector<Object>(Arrays.asList(new String[]{"Row 1-1", "Row 1-2", "Row 1-3", "Row 1-4"}));;
-		Vector<Object> vRow2 = new Vector<Object>(Arrays.asList(new String[]{"Row 2-1", "Row 2-2", "Row 2-3", "Row 2-4"}));;
-		Vector<Object> vRow3 = new Vector<Object>(Arrays.asList(new String[]{"Row 3-1", "Row 3-2", "Row 3-3", "Row 3-4"}));;
-		Vector<Object> vRow4 = new Vector<Object>(Arrays.asList(new String[]{"Row 4-1", "Row 4-2", "Row 4-3", "Row 4-4"}));;
-		Vector<Vector<Object>> vRows = new Vector<Vector<Object>>(Arrays.asList(vRow1, vRow2, vRow3, vRow4));
+		Vector<Object> vRow1 = new Vector<Object>(Arrays.asList(new Object[]{"Row 1-1", false, true, "Row 5-4-3"}));;
+		Vector<Object> vRow2 = new Vector<Object>(Arrays.asList(new Object[]{"Row 1-1", true, false, "Row 5-4-3"}));;
+		Vector<Object> vRow3 = new Vector<Object>(Arrays.asList(new Object[]{"Row 1-1", true, true, "Row 5-4-3"}));;
+		Vector<Object> vRow4 = new Vector<Object>(Arrays.asList(new Object[]{"Row 1-1", false, false, "Row 5-4-3"}));;
+		Vector<Object> vRow5 = new Vector<Object>(Arrays.asList(new Object[]{"Row 1-1", true, false, "Row 5-4-3"}));;
+		
+		Vector<Vector<Object>> vRows = new Vector<Vector<Object>>(Arrays.asList(vRow1, vRow2, vRow3, vRow4, vRow5));
 		setData(vRows, headers, new int[]{50, 50, 50, 50});
 		
-		setSelectionBackground(new java.awt.Color(255, 255, 153));
 		setSelectionForeground(new java.awt.Color(0, 0, 0));
-		
+
 		//Add event
 		addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TableMouseClicked(evt);
             }
 		});
+	}
+	
+	public void setUpdateTableCell(int[] updatableTableCell){
+		this.updatableTableCell = updatableTableCell;
 	}
 
 	protected void TableMouseClicked(MouseEvent evt) {
@@ -100,8 +120,20 @@ public class SmartTable extends JTable{
 		model.fireTableRowsDeleted(rowIdx, rowIdx);
 	}
 	
-	public void updateRow(Vector<Object> item, int rowIdx){
-		
+	public void updateRow(Vector<Object> row, int idx){
+		updateRow(row, idx, true);
+	}
+	
+	public void updateRow(Vector<Object> row, int idx, boolean isSelectNewRow){
+		dataSource.set(idx, row);
+		model.fireTableRowsUpdated(idx, idx);
+	}
+
+	public void newRow(Vector<Object> row, boolean isSelectNewRow) {
+		dataSource.add(row);
+		model.fireTableRowsInserted(model.getRowCount() -1, model.getRowCount() -1);
+		setRowSelectionInterval(model.getRowCount() -1, model.getRowCount() -1);
+		scrollRectToVisible(getCellRect(getSelectedRow(), 0, true));
 	}
 	
 	private void initColumntable() {
@@ -119,7 +151,6 @@ public class SmartTable extends JTable{
 	}
 	
 	private void initColumnTableToCheckBox(int column) {
-        getColumnModel().getColumn(column).setCellEditor(new MyTableCellCheckBoxEditor());
         getColumnModel().getColumn(column).setCellRenderer(new MyTableCellCheckBoxRender());
     }
 
@@ -134,76 +165,102 @@ public class SmartTable extends JTable{
 	
 	private class MyTableModel extends DefaultTableModel{
 		
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 		private boolean isEditable = false;
 		
         public void setEditable(boolean isEditable) {
         	this.isEditable = isEditable;
         }
-
+        
         @Override
         public boolean isCellEditable(int rowIndex, int columIndex) {
-            return isEditable;
+        	if(updatableTableCell == null || updatableTableCell.length == 0){
+        		return isEditable;
+        	}
+        	for(int i = 0; i < updatableTableCell.length; i++){
+        		if(columIndex == updatableTableCell[i]){
+        			return true;
+        		}
+        	}
+            return false;
         }
 	}
     
-    
-	public void newRow(Vector<Object> row, boolean isSelectNewRow) {
-		dataSource.add(row);
-		model.fireTableRowsInserted(model.getRowCount() -1, model.getRowCount() -1);
-		setRowSelectionInterval(model.getRowCount() -1, model.getRowCount() -1);
-		scrollRectToVisible(getCellRect(getSelectedRow(), 0, true));
-		
-	}
-	
-	public void updateRow(Vector<Object> row, int idx, boolean isSelectNewRow){
-		dataSource.set(idx, row);
-		model.fireTableRowsUpdated(idx, idx);
-	}
-	
-	private class MyTableCellCheckBoxEditor extends AbstractCellEditor implements TableCellEditor{
+	private class MyTableCellRender extends DefaultTableCellRenderer{
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			updateComponentBackGroundColor(comp, row, isSelected);
+			setBorder(null);
+			
+			return comp;
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	private class MyTableCellCheckBoxEditor extends AbstractCellEditor implements TableCellEditor{
+
+		private static final long serialVersionUID = 1L;
+		public JCheckBox chk = getCheckBox();
+		
+		private JCheckBox getCheckBox(){
+			JCheckBox tmp = new JCheckBox();
+			tmp.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(isEditing()){
+						getCellEditor().stopCellEditing();
+					}
+				}
+			});
+			return tmp;
+		}
+
+		@Override
 		public Object getCellEditorValue() {
-			// TODO Auto-generated method stub
-			return null;
+			return chk.isSelected();
 		}
 
 		@Override
 		public Component getTableCellEditorComponent(JTable table,
 				Object value, boolean isSelected, int row, int column) {
-			// TODO Auto-generated method stub
-			return null;
+			chk.setSelected((Boolean) value);
+			chk.setHorizontalAlignment(SwingConstants.LEFT);
+			return chk;
 		}
     }
-    
     
 	private class MyTableCellCheckBoxRender extends DefaultTableCellRenderer implements TableCellRenderer{
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table,
-				Object value, boolean isSelected, boolean hasFocus, int row,
-				int column) {
-			// TODO Auto-generated method stub
-			return null;
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			JCheckBox chk = new JCheckBox();
+			chk.setSelected((Boolean) value);
+			chk.setHorizontalAlignment(SwingConstants.CENTER);
+			chk.setOpaque(true);
+			updateComponentBackGroundColor(chk, row, isSelected);
+			
+			return chk;
 		}
-    	
     }
-    
-    
+
+	private void updateComponentBackGroundColor(Component comp, int row, boolean isSelected){
+		if(row % 2 == 0){
+			comp.setBackground(ROW_COLOR_EVEN);
+		}else{
+			comp.setBackground(ROW_COLOR_ODD);
+		}
+		if(isSelected){
+			comp.setBackground(ROW_COLOR_SELECTED);
+		}
+	}
+	
 	/**
      * ComboBox editor for JTable
      * @author aethv
@@ -283,7 +340,6 @@ public class SmartTable extends JTable{
 			super(source);
 		}
 	}
-
 	
 	public interface SmartTableEventListener extends EventListener {
 
