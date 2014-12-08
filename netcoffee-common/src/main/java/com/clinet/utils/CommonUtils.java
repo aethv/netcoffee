@@ -10,8 +10,6 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.UUID;
 
-import javax.swing.JProgressBar;
-
 public class CommonUtils {
 	
 	public static void main(String[] args) {
@@ -80,11 +78,5 @@ public class CommonUtils {
 			}
 		}
 		return null;
-	}
-	
-	public static JProgressBar getProgressBar(){
-		JProgressBar bar = new JProgressBar();
-		
-		return bar;
 	}
 }

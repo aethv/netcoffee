@@ -1,5 +1,6 @@
 package com.clinet;
 
+import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.rmi.AlreadyBoundException;
@@ -7,6 +8,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -27,11 +31,14 @@ public class Main {
 	private UIMain mainApp;
 	private CommonRemote cr;
 	
+	//TODO change to common resource
+	private static final String STR_PROGRESS_LOADING = "Loading...";
+	
 	public Main() {
-		//create server connection before GUI initializing
-		//TODO create progress bar for loading
-		
 		try{
+			LOGGER.debug("==============BEGIN");
+			
+			
 			Thread rmi = new Thread(new RMIManager());
 			rmi.start();
 			
@@ -44,7 +51,6 @@ public class Main {
 					mainApp.setVisible(true);
 					
 					mainApp.addWindowListener(new WindowAdapter() {
-						
 						@Override
 						public void windowClosing(WindowEvent e) {
 							Main.LOGGER.debug("main app closing");
@@ -61,6 +67,8 @@ public class Main {
 		}catch(Exception ex){
 			LOGGER.debug("Unable to start Server application", ex);
 			System.exit(1);
+		}finally{
+			
 		}
 	}
 	
@@ -87,17 +95,25 @@ public class Main {
 	}
 
 	private class RMIManager implements Runnable{
-
+		private JDialog dalg;
+		private JProgressBar progress;
+		
 		@Override
 		public void run()
 		{
 			try
 			{
+//				showDialog();
+				LOGGER.debug("started");
 				startChatServer();
 			}
 			catch (Exception e)
 			{
 				LOGGER.error("Could not start RMI service", e);
+			}
+			finally
+			{
+//				closeDialog();
 			}
 		}
 
@@ -113,6 +129,35 @@ public class Main {
 				LOGGER.debug("unable to initialize server service");
 				MessageUtils.showError("Server is not ready!!! Please close and try again");
 				throw new Exception("unable to initialize server chat service");
+			} finally{
+				LOGGER.debug("================finished");
+			}
+		}
+		
+		public void showDialog(){
+			try{
+				dalg = new JDialog(mainApp, true);
+				progress = new JProgressBar();
+				progress.setIndeterminate(true);
+				progress.setStringPainted(true);
+				progress.setString(STR_PROGRESS_LOADING);
+				dalg.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	            dalg.setSize(250, 80);
+	            dalg.getContentPane().setLayout(new BorderLayout());
+	            dalg.getContentPane().add(progress);
+	            CommonUtils.centerForm(dalg);
+	            dalg.setVisible(true);
+			}catch(Exception ex){
+				LOGGER.debug("unable to show dialog", ex);
+				MessageUtils.showError("Unable to show dialog " + ex.getMessage());
+			}
+		}
+		
+		public void closeDialog(){
+			if(dalg != null){
+				dalg.dispose();
+				dalg.setVisible(false);
+				dalg = null;
 			}
 		}
 	}
