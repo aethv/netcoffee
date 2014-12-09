@@ -49,9 +49,6 @@ public class Account implements Serializable{
 	@Column(name="LAST_LOGIN")
 	private Date lastLogin;
 	
-	@Column(name="TOKEN")
-	private String token;
-	
 	public Account(){}
 	
 	public Account(String username, String password) {
@@ -121,14 +118,6 @@ public class Account implements Serializable{
 
 	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
 	}
 
 	@Override

@@ -48,7 +48,6 @@ public class ServerProcess extends UnicastRemoteObject implements CommonRemote {
 			LOGGER.info("logined successfully by user: " + acc.getUsername());
 			token = CommonUtils.getRandom8Chars();
 			acc.setLastLogin(Calendar.getInstance().getTime());
-			acc.setToken(token);
 			
 			accDAO.update(acc);
 			mapUser.put(acc.getUsername(), messInterface);
