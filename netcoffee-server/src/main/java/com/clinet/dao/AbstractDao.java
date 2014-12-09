@@ -11,6 +11,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 
+import com.clinet.exception.DataAccessLayerException;
+import com.clinet.utils.HibernateFactory;
+
 public abstract class AbstractDao<T extends Serializable> implements IAbstractDAO<T> {
 	
     protected Session session;

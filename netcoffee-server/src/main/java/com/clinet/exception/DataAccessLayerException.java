@@ -1,4 +1,4 @@
-package com.clinet.dao;
+package com.clinet.exception;
 
 
 public class DataAccessLayerException extends RuntimeException {

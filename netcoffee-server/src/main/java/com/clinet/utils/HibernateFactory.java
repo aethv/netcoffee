@@ -1,4 +1,4 @@
-package com.clinet.dao;
+package com.clinet.utils;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import com.clinet.utils.HibernateUtil;
+import com.clinet.exception.DataAccessLayerException;
 
 public class HibernateFactory {
 	private static SessionFactory sessionFactory;
