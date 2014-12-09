@@ -191,15 +191,24 @@ public class SmartTable extends JTable{
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table,
+				Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
 			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-			updateComponentBackGroundColor(comp, row, isSelected);
+			
+			if(row % 2 == 0){
+				comp.setBackground(ROW_COLOR_EVEN);
+			}else{
+				comp.setBackground(ROW_COLOR_ODD);
+			}
+			if(isSelected){
+				comp.setBackground(ROW_COLOR_SELECTED);
+			}
 			setBorder(null);
 			
 			return comp;
 		}
 	}
-	
 	@SuppressWarnings("unused")
 	private class MyTableCellCheckBoxEditor extends AbstractCellEditor implements TableCellEditor{
 
@@ -245,7 +254,7 @@ public class SmartTable extends JTable{
 			chk.setHorizontalAlignment(SwingConstants.CENTER);
 			chk.setOpaque(true);
 			updateComponentBackGroundColor(chk, row, isSelected);
-			
+
 			return chk;
 		}
     }

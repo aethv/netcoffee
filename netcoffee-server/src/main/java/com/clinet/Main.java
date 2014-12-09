@@ -37,7 +37,6 @@ public class Main {
 	public Main() {
 		try{
 			LOGGER.debug("==============BEGIN");
-			
 			RMIManager rmi = new RMIManager();
 			rmi.start();
 			rmi.showDialog();

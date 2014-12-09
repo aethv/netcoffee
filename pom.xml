@@ -70,22 +70,22 @@
 				<version>4.0</version>
 			</dependency>
 
-			<!-- Log4j -->
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.7.2</version>
-			</dependency>
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.17</version>
-			</dependency>
-			<dependency>
-				<groupId>com.googlecode.genericdao</groupId>
-				<artifactId>dao-hibernate</artifactId>
-				<version>1.2.0</version> <!-- use current version -->
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+            <!-- Log4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.7.2</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.genericdao</groupId>
+                <artifactId>dao-hibernate</artifactId>
+                <version>1.2.0</version> <!-- use current version -->
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
