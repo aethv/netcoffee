@@ -36,7 +36,7 @@ public class UIMain extends UICommonFrame {
 	private JPanel pnlBottom;
 	private JPanel pnlMain;
 	private UCChat uiChat;
-	private UCUserManagement ucUserManagement;
+	private UCAccount ucUserManagement;
 	private UCFood ucFood;
 	private UCOrders ucOrders;
 	private UCSetting ucSetting;
@@ -218,7 +218,7 @@ public class UIMain extends UICommonFrame {
 		LOGGER.debug("btnAccount is invoked");
 		if(ucUserManagement == null){
 			LOGGER.debug("btnAccount first time clicked");
-			ucUserManagement = new UCUserManagement(this);
+			ucUserManagement = new UCAccount(this);
 		}
 		LOGGER.debug("activing User Management");
 		ucUserManagement.activePanel();

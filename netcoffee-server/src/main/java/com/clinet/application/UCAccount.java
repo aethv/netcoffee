@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.clinet.application.utils.SmartTable;
 
-public class UCUserManagement extends UICommonPanel {
+public class UCAccount extends UICommonPanel {
 
 	/**
 	 * 
@@ -36,7 +36,7 @@ public class UCUserManagement extends UICommonPanel {
 	/**
 	 * Create the panel.
 	 */
-	public UCUserManagement(UIMain main) {
+	public UCAccount(UIMain main) {
 		super();
 		this.main = main;
 		initComponents();
