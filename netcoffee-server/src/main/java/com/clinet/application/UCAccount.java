@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -15,7 +18,14 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.clinet.application.utils.SmartTable;
+import com.clinet.dao.AccountDAO;
+import com.clinet.model.Account;
+import com.clinet.utils.MessageUtils;
 
 public class UCAccount extends UICommonPanel {
 
@@ -23,6 +33,8 @@ public class UCAccount extends UICommonPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = LoggerFactory.getLogger(UCAccount.class);
+	
 	private JPanel pnlTop;
 	private JPanel pnlBottom;
 	private JPanel pnlMain;
@@ -32,6 +44,9 @@ public class UCAccount extends UICommonPanel {
 	private JScrollPane scrollPane;
 	private DefaultTableModel model;
 	private UIMain main;
+	
+	private List<Account> lstAccount = new ArrayList<Account>();
+	private AccountDAO accountDAO;
 	
 	/**
 	 * Create the panel.
@@ -51,7 +66,9 @@ public class UCAccount extends UICommonPanel {
 	}
 	
 	private void initForm(){
-//		model.addRow(new Object[]{});
+		accountDAO = new AccountDAO();
+		
+		refreshTable();
 	}
 	
 	@Override
@@ -61,8 +78,30 @@ public class UCAccount extends UICommonPanel {
 	}
 
 	private void refreshTable() {
-		// TODO Auto-generated method stub
-		
+		try{
+			lstAccount = accountDAO.findAll();
+			Vector<Vector<Object>> tableData = new Vector<Vector<Object>>();
+			
+			Vector<Object> vRow = null;
+			for(Account acc : lstAccount){
+				vRow = new Vector<Object>();
+				vRow.add(acc);
+				vRow.add(acc.getAccountId());
+				vRow.add(acc.getUsername());
+				vRow.add(acc.getDisplayName());
+				vRow.add(acc.isActive());
+				if(acc.getLastLogin() == null){
+					vRow.add(StringUtils.EMPTY);
+				}else{
+					vRow.add(acc.getLastLogin());
+				}
+				tableData.add(vRow);
+			}
+			table.setData(tableData, new String[]{"ID", "Username", "Display name", "Status", "Last login"}, new int[]{50, 100, 100, 50, 100});
+		}catch(Exception ex){
+			LOGGER.debug("Unable to refresh table data", ex);
+			MessageUtils.showError("Unable to refresh table data: " + ex.getMessage());
+		}
 	}
 
 	protected void initComponents() {
